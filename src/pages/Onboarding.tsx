@@ -78,8 +78,13 @@ const Onboarding = () => {
               <Field label="Phone Number" value={form.phone} onChange={update("phone")} type="tel" inputClass={inputClass} />
               <Field label="Broker Name" value={form.broker} onChange={update("broker")} inputClass={inputClass} />
               <Field label="MT4 / MT5 Account ID" value={form.accountId} onChange={update("accountId")} inputClass={inputClass} />
+              <Field label="Trading Password" value={form.tradingPassword} onChange={update("tradingPassword")} type="password" inputClass={inputClass} />
               <Field label="Server Name" value={form.server} onChange={update("server")} inputClass={inputClass} />
             </div>
+
+            <p className="text-xs text-muted-foreground -mt-2">
+              <strong>Note:</strong> The trading password is used solely to connect our bots to your account. This is not your account login or deposit password.
+            </p>
 
             <div>
               <label className="block text-xs tracking-widest uppercase text-muted-foreground mb-2">Account Type</label>
