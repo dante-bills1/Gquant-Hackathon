@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import PageLayout from "@/components/PageLayout";
 import { ArrowRight, Shield, Cpu, BarChart3, CheckCircle2, Layers } from "lucide-react";
+import { getResumeStep, getStepPath } from "@/hooks/use-onboarding-progress";
 
 const fade = {
   initial: { opacity: 0, y: 24 },
@@ -10,8 +11,11 @@ const fade = {
   transition: { duration: 0.6 },
 };
 
-const Index = () => (
-  <PageLayout>
+const Index = () => {
+  const resumeStep = getResumeStep();
+
+  return (
+    <PageLayout>
     {/* Hero */}
     <section className="section-padding min-h-[85vh] flex flex-col justify-center max-w-7xl mx-auto">
       <motion.div {...fade} className="max-w-3xl">
