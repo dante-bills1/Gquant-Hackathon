@@ -1,12 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import PageLayout from "@/components/PageLayout";
 import { FEES } from "@/config/fees";
+import { saveOnboardingProgress, hasCompletedStep, getOnboardingProgress, getStepPath } from "@/hooks/use-onboarding-progress";
 
 const Agreement = () => {
   const [agreed, setAgreed] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (hasCompletedStep("agreement")) {
+      const progress = getOnboardingProgress();
+      if (progress) navigate(getStepPath(progress.currentStep), { replace: true });
+    }
+  }, [navigate]);
+
+  const handleAgree = () => {
+    saveOnboardingProgress({ currentStep: "signature", agreedAt: new Date().toISOString() });
+    navigate("/signature");
+  };
 
   return (
     <PageLayout>
@@ -83,7 +96,7 @@ const Agreement = () => {
 
             <button
               disabled={!agreed}
-              onClick={() => navigate("/signature")}
+              onClick={handleAgree}
               className="w-full bg-primary text-primary-foreground py-3 text-sm font-medium rounded hover:opacity-90 transition-opacity disabled:opacity-30 disabled:cursor-not-allowed"
             >
               I Agree & Continue

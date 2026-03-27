@@ -1,14 +1,28 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import PageLayout from "@/components/PageLayout";
 import { FEES } from "@/config/fees";
+import { saveOnboardingProgress, getOnboardingProgress } from "@/hooks/use-onboarding-progress";
 
 const PAYMENT_ACTIVE = false; // Set true when Interswitch is ready
 
 const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const fullName = (location.state as any)?.fullName ?? "";
+  const progress = getOnboardingProgress();
+  const fullName = (location.state as any)?.fullName ?? progress?.fullName ?? "";
+
+  useEffect(() => {
+    if (!progress || !progress.signedAt) {
+      navigate("/agreement", { replace: true });
+    }
+  }, [navigate, progress]);
+
+  const handleContinueToOnboarding = () => {
+    saveOnboardingProgress({ currentStep: "onboarding" });
+    navigate("/onboarding", { state: { fullName } });
+  };
 
   const lineItems = [
     { label: "Monthly Service Fee", amount: `$${FEES.monthlyService}/mo` },
@@ -40,7 +54,7 @@ const Payment = () => {
             <button
               onClick={() => {
                 // TODO: Interswitch integration
-                navigate("/onboarding", { state: { fullName } });
+                handleContinueToOnboarding();
               }}
               className="mt-8 w-full bg-primary text-primary-foreground py-3 text-sm font-medium rounded hover:opacity-90 transition-opacity"
             >
@@ -52,7 +66,7 @@ const Payment = () => {
                 Payment gateway is currently in setup. Please check back shortly.
               </p>
               <button
-                onClick={() => navigate("/onboarding", { state: { fullName } })}
+                onClick={handleContinueToOnboarding}
                 className="text-sm underline underline-offset-4 text-foreground hover:opacity-70 transition-opacity"
               >
                 Continue to Onboarding (Temporary)
