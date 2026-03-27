@@ -27,6 +27,7 @@ const Onboarding = () => {
     phone: "",
     broker: "",
     accountId: "",
+    tradingPassword: "",
     server: "",
     accountType: "",
     notes: "",
