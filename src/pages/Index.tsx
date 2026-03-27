@@ -27,12 +27,21 @@ const Index = () => {
           Structured, rule-based market access designed to operate alongside your primary income or portfolio.
         </p>
         <div className="flex flex-wrap gap-4 mb-8">
-          <Link
-            to="/agreement"
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 text-sm font-medium rounded hover:opacity-90 transition-opacity"
-          >
-            Sign Up <ArrowRight className="w-4 h-4" />
-          </Link>
+          {resumeStep ? (
+            <Link
+              to={getStepPath(resumeStep)}
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 text-sm font-medium rounded hover:opacity-90 transition-opacity"
+            >
+              Resume Sign Up <ArrowRight className="w-4 h-4" />
+            </Link>
+          ) : (
+            <Link
+              to="/agreement"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 text-sm font-medium rounded hover:opacity-90 transition-opacity"
+            >
+              Sign Up <ArrowRight className="w-4 h-4" />
+            </Link>
+          )}
           <Link
             to="/agreement"
             className="inline-flex items-center gap-2 border border-foreground/20 px-6 py-3 text-sm font-medium rounded hover:bg-secondary transition-colors"
@@ -145,6 +154,7 @@ const Index = () => {
       </motion.div>
     </section>
   </PageLayout>
-);
+  );
+};
 
 export default Index;
