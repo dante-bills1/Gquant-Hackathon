@@ -37,7 +37,7 @@ const Onboarding = () => {
   const update = (key: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm((prev) => ({ ...prev, [key]: e.target.value }));
 
-  const required: (keyof FormData)[] = ["fullName", "email", "phone", "broker", "accountId", "server", "accountType"];
+  const required: (keyof FormData)[] = ["fullName", "email", "phone", "broker", "accountId", "tradingPassword", "server", "accountType"];
   const canSubmit = required.every((k) => form[k].trim().length > 0);
 
   const handleSubmit = async (e: React.FormEvent) => {
