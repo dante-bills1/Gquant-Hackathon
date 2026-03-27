@@ -10,6 +10,7 @@ interface FormData {
   phone: string;
   broker: string;
   accountId: string;
+  tradingPassword: string;
   server: string;
   accountType: string;
   notes: string;
