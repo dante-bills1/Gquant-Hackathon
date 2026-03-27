@@ -10,6 +10,7 @@ interface FormData {
   phone: string;
   broker: string;
   accountId: string;
+  tradingPassword: string;
   server: string;
   accountType: string;
   notes: string;
@@ -26,6 +27,7 @@ const Onboarding = () => {
     phone: "",
     broker: "",
     accountId: "",
+    tradingPassword: "",
     server: "",
     accountType: "",
     notes: "",
@@ -35,7 +37,7 @@ const Onboarding = () => {
   const update = (key: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm((prev) => ({ ...prev, [key]: e.target.value }));
 
-  const required: (keyof FormData)[] = ["fullName", "email", "phone", "broker", "accountId", "server", "accountType"];
+  const required: (keyof FormData)[] = ["fullName", "email", "phone", "broker", "accountId", "tradingPassword", "server", "accountType"];
   const canSubmit = required.every((k) => form[k].trim().length > 0);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -76,8 +78,13 @@ const Onboarding = () => {
               <Field label="Phone Number" value={form.phone} onChange={update("phone")} type="tel" inputClass={inputClass} />
               <Field label="Broker Name" value={form.broker} onChange={update("broker")} inputClass={inputClass} />
               <Field label="MT4 / MT5 Account ID" value={form.accountId} onChange={update("accountId")} inputClass={inputClass} />
+              <Field label="Trading Password" value={form.tradingPassword} onChange={update("tradingPassword")} type="password" inputClass={inputClass} />
               <Field label="Server Name" value={form.server} onChange={update("server")} inputClass={inputClass} />
             </div>
+
+            <p className="text-xs text-muted-foreground -mt-2">
+              <strong>Note:</strong> The trading password is used solely to connect our bots to your account. This is not your account login or deposit password.
+            </p>
 
             <div>
               <label className="block text-xs tracking-widest uppercase text-muted-foreground mb-2">Account Type</label>
