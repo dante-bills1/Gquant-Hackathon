@@ -1,14 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import PageLayout from "@/components/PageLayout";
+import { saveOnboardingProgress, getOnboardingProgress } from "@/hooks/use-onboarding-progress";
 
 const Signature = () => {
-  const [fullName, setFullName] = useState("");
-  const [consent, setConsent] = useState(false);
   const navigate = useNavigate();
+  const progress = getOnboardingProgress();
+  const [fullName, setFullName] = useState(progress?.fullName ?? "");
+  const [consent, setConsent] = useState(false);
   const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
   const canContinue = fullName.trim().length > 2 && consent;
+
+  useEffect(() => {
+    if (!progress || !progress.agreedAt) {
+      navigate("/agreement", { replace: true });
+    }
+  }, [navigate, progress]);
+
+  const handleContinue = () => {
+    saveOnboardingProgress({ currentStep: "payment", fullName, signedAt: new Date().toISOString() });
+    navigate("/payment", { state: { fullName } });
+  };
 
   return (
     <PageLayout>
@@ -57,7 +70,7 @@ const Signature = () => {
 
           <button
             disabled={!canContinue}
-            onClick={() => navigate("/payment", { state: { fullName } })}
+            onClick={handleContinue}
             className="mt-8 w-full bg-primary text-primary-foreground py-3 text-sm font-medium rounded hover:opacity-90 transition-opacity disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Continue to Payment

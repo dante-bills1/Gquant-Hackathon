@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import PageLayout from "@/components/PageLayout";
 import { ArrowRight, Shield, Cpu, BarChart3, CheckCircle2, Layers } from "lucide-react";
+import { getResumeStep, getStepPath } from "@/hooks/use-onboarding-progress";
 
 const fade = {
   initial: { opacity: 0, y: 24 },
@@ -10,8 +11,11 @@ const fade = {
   transition: { duration: 0.6 },
 };
 
-const Index = () => (
-  <PageLayout>
+const Index = () => {
+  const resumeStep = getResumeStep();
+
+  return (
+    <PageLayout>
     {/* Hero */}
     <section className="section-padding min-h-[85vh] flex flex-col justify-center max-w-7xl mx-auto">
       <motion.div {...fade} className="max-w-3xl">
@@ -23,12 +27,21 @@ const Index = () => (
           Structured, rule-based market access designed to operate alongside your primary income or portfolio.
         </p>
         <div className="flex flex-wrap gap-4 mb-8">
-          <Link
-            to="/agreement"
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 text-sm font-medium rounded hover:opacity-90 transition-opacity"
-          >
-            Sign Up <ArrowRight className="w-4 h-4" />
-          </Link>
+          {resumeStep ? (
+            <Link
+              to={getStepPath(resumeStep)}
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 text-sm font-medium rounded hover:opacity-90 transition-opacity"
+            >
+              Resume Sign Up <ArrowRight className="w-4 h-4" />
+            </Link>
+          ) : (
+            <Link
+              to="/agreement"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 text-sm font-medium rounded hover:opacity-90 transition-opacity"
+            >
+              Sign Up <ArrowRight className="w-4 h-4" />
+            </Link>
+          )}
           <Link
             to="/agreement"
             className="inline-flex items-center gap-2 border border-foreground/20 px-6 py-3 text-sm font-medium rounded hover:bg-secondary transition-colors"
@@ -125,12 +138,21 @@ const Index = () => (
           Structured onboarding. Systematic deployment. Quantitative execution.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <Link
-            to="/agreement"
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 text-sm font-medium rounded hover:opacity-90 transition-opacity"
-          >
-            Sign Up <ArrowRight className="w-4 h-4" />
-          </Link>
+          {resumeStep ? (
+            <Link
+              to={getStepPath(resumeStep)}
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 text-sm font-medium rounded hover:opacity-90 transition-opacity"
+            >
+              Resume Sign Up <ArrowRight className="w-4 h-4" />
+            </Link>
+          ) : (
+            <Link
+              to="/agreement"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 text-sm font-medium rounded hover:opacity-90 transition-opacity"
+            >
+              Sign Up <ArrowRight className="w-4 h-4" />
+            </Link>
+          )}
           <Link
             to="/agreement"
             className="inline-flex items-center gap-2 border border-foreground/20 px-6 py-3 text-sm font-medium rounded hover:bg-secondary transition-colors"
@@ -141,6 +163,7 @@ const Index = () => (
       </motion.div>
     </section>
   </PageLayout>
-);
+  );
+};
 
 export default Index;

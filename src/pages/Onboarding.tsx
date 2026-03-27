@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import PageLayout from "@/components/PageLayout";
 import { toast } from "sonner";
+import { saveOnboardingProgress, getOnboardingProgress, clearOnboardingProgress } from "@/hooks/use-onboarding-progress";
 
 interface FormData {
   fullName: string;
@@ -19,7 +20,14 @@ interface FormData {
 const Onboarding = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const prefillName = (location.state as any)?.fullName ?? "";
+  const progress = getOnboardingProgress();
+  const prefillName = (location.state as any)?.fullName ?? progress?.fullName ?? "";
+
+  useEffect(() => {
+    if (!progress || !progress.signedAt) {
+      navigate("/agreement", { replace: true });
+    }
+  }, [navigate, progress]);
 
   const [form, setForm] = useState<FormData>({
     fullName: prefillName,
@@ -50,6 +58,8 @@ const Onboarding = () => {
       // This would store data securely and trigger Telegram notification
       console.log("Onboarding submitted:", { ...form });
       toast.success("Onboarding submitted successfully!");
+      saveOnboardingProgress({ currentStep: "success" });
+      clearOnboardingProgress();
       navigate("/success");
     } catch {
       toast.error("Something went wrong. Please try again.");

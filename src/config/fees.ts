@@ -1,5 +1,5 @@
 export const FEES = {
-  monthlyService: 5,
+  monthlyService: 50,
   currency: "USD",
   profitSplit: { client: 60, gquant: 40 },
   setupFee: 0, // Set > 0 to enable a separate setup fee
